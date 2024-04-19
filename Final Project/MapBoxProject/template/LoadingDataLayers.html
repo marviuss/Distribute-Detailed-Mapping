@@ -1,0 +1,66 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Show and hide layers</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.2.0/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.2.0/mapbox-gl-directions.css" type="text/css">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}"/>
+</head>
+<body>
+ <div class = "container2">
+    <nav id="menu">
+        <a id="dropdownBtn" href="#">Load Route</a>
+        <div id="dropdownContent" style="display: none;">
+            <a href="#" class="routeOption">Load Cycle Route</a>
+            <a href="#" class="routeOption">Load Car Route</a>
+            <a href="#" class="routeOption">Load Walking</a>
+            <a href="#" class="routeOption">Load Walking+Car</a>
+            <a href="#" class="routeOption">Load Walking+Cycling</a>
+            <a href="#" class="routeOption">Load Cycling+Car</a>
+        </div>
+        <!-- <a id="shortestRouteBtn" href="#" style="display: none;">Find Shortest Route</a> -->
+
+    </nav>
+    
+    <div class="input-container">
+        <label for="start-time">Start Time:</label>
+        <input type="time" id="start-time" name="start-time">
+    </div>
+    <button id="showDangerousJunctionsBtn">Show Dangerous Junctions</button>
+    <button id="displayRoadsUnderConstructionBtn">Display Roads Under Construction</button>
+    <button id="safestRouteBtn" href="#" style="display: none;">Find Safest Route</button>
+    <button id="shortestRouteBtn" href="#" style="display: none;">Find Shortest Route</button>
+ </div>
+
+ <div class="container">
+    <div id="company-name">
+        <a href="https://www.distribute.company/">DISTRIBUTE</a>
+    </div>
+ </div>
+
+ <div class="container3">
+
+ </div>
+
+</nav>
+<div id="map"></div>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="instructions"></div>
+    </div>
+</div>
+
+
+
+</div>
+<script src="{{ url_for('static',filename='script.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+body { margin: 0; padding: 0;}
+#map { position: absolute; top: 10vh; left: 16.6%; width: 83.4%; height: 90vh;}
+
+/* We need to put the format of the menu in a separate css file */
+#menu {
+    background: #292727;
+    position: relative;
+    z-index: 1;
+    top: 15%;
+    left: 10%;
+    border-radius: 1vh;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
+    font-family: 'Open Sans', sans-serif;
+    overflow: hidden; /* Hide overflow content */
+}
+
+#menu a {
+    font-size: 13px;
+    color: white;
+    display: block;
+    margin: 0;
+    padding: 0;
+    padding: 10px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+#menu a:last-child {
+    border: none;
+}
+
+#menu a:hover {
+    background-color:#3887be;
+    color: white;
+}
+
+#menu a.active {
+    background-color: #3887be;
+    color: #ffffff;
+}
+
+#menu.dropdown {
+    height: auto;
+    overflow: visible; /* Show overflow content */
+}
+
+#menu.dropdown a {
+    border-bottom: none; 
+}
+.marker {
+    width: 20px;
+    height: 20px;
+    background-color: red; 
+}
+#shortestRouteBtn {
+    position: relative;
+    top: 35%; 
+    left: 10%; 
+    color: white;
+    background-color: #292727;
+    border-radius: 1vh;
+    height: 5%;
+    width: 80%;
+    cursor: pointer;
+    border: none;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
+}
+
+#safestRouteBtn {
+    position: relative;
+    top: 31%; 
+    left: 10%; 
+    color: white;
+    background-color: #292727;
+    border-radius: 1vh; 
+    height: 5%;
+    width: 80%;
+    cursor: pointer;
+    border: none;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
+}
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    width: 50%; /* Adjust the width */
+    max-width: 400px;
+    background-color: white; /* Semi-transparent white */
+    padding: 20px;
+    margin-top: 20px; /* Adjust the distance from the top */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+#showDangerousJunctionsBtn {
+            position: relative;
+            top: 23%;
+            left: 10%;
+            width: 80%;
+            height: 5%;
+            z-index: 1;
+            background-color: #292727;
+            color: #fff;
+            border: none;
+            border-radius: 1vh;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
+        }
+
+#displayRoadsUnderConstructionBtn{
+            position: relative;
+            top: 27%;
+            left: 10%;
+            width: 80%;
+            height: 5%;
+            z-index: 1;
+            background-color: #292727;
+            color: #fff;
+            border: none;
+            border-radius: 1vh;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
+
+}
+.danger-marker {
+        width: 18px;
+        height: 18px;
+        background-size: cover;
+        }
+
+
+/* Style for the input container */
+.input-container {
+    position: relative;
+    top: 19%; /* Adjust this value to vertically center the input container */
+    left: 10%; /* Adjust this value to horizontally center the input container */
+    width: 80%;
+    height: 2%;
+    border-radius: 1vh;
+    color: white;
+    background-color: #2F303A; /* Adjust the background color and opacity */
+ /* Add padding to the input container */
+    border-radius: 1vh; /* Add border radius for rounded corners */
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.container {
+    background-color: #292727;
+    position: absolute;
+    color: #fff;
+    height: 10vh;
+    top: 0vh;
+    left: 0vh;
+    width: 100%;
+  }
+
+
+  .container2 {
+    background-color: #2F303A;
+    position: absolute;
+    width: 16.6%;
+    height: 100%;
+  }
+
+
+  .container3 {
+    background-color: white;
+    position: relative;
+    top: 10vh;
+    left: 16.6%;
+    height: 90vh;
+    width: 83.4%;
+    
+  }
+
+  #company-name a{
+    color: white;
+    text-decoration: none; 
+    letter-spacing: 0.1em;
+    font-size: 4vh;
+    font-weight: bold;
+    position: relative;
+    width: 9.7%;
+    height: 4.7%;
+    top: 2.5vh;
+    left: 1%;
+    border-radius: 1vh;
+  }
+
+  
