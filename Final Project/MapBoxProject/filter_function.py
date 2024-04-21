@@ -58,9 +58,6 @@ def create_geojson(filters, input_geojson_file, output_geojson_file):
     current_directory = os.path.dirname(__file__)
     j = open(os.path.join(current_directory, input_geojson_file))
     data = json.load(j)
-    # # Open input GeoJSON file
-    # with open(input_geojson_file) as f:
-    #     data = json.load(f)
 
     # Filter features to keep only LineString geometries
     data_features = [feature for feature in data['features'] if get_lines(feature)]

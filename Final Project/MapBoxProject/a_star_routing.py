@@ -1,17 +1,18 @@
 import json
+import os
+
 import folium
 import random
 import math
 import networkx as nx
 from heapq import heappop, heappush
 
-
 def read_geojson(file_path):
     with open(file_path, 'r') as f:
         data = json.load(f)
     return data
 
-
+# Function to find the closest node in the graph to a given coordinate
 def find_closest_node(graph, coord):
     min_distance = float('inf')
     closest_node = None
@@ -22,7 +23,7 @@ def find_closest_node(graph, coord):
             closest_node = node
     return closest_node
 
-
+# Function to connect disconnected components in the graph
 def connect_disconnected_components(graph):
     nx_graph = nx.Graph(graph)  # Convert the graph to a networkx graph object
 
@@ -50,15 +51,7 @@ def connect_disconnected_components(graph):
     return nx_graph
 
 
-def extract_coordinates(geojson_data):
-    coordinates = []
-    for feature in geojson_data['features']:
-        if feature['geometry']['type'] == 'Point':
-            x, y = feature['geometry']['coordinates']
-            coordinates.append((y, x))  # Swap X and Y values
-    return coordinates
-
-
+# Function to extract lines from GeoJSON data
 def extract_lines(lines_data):
     lines = []
     for feature in lines_data['features']:
@@ -68,7 +61,7 @@ def extract_lines(lines_data):
             lines.append(switched_coordinates)
     return lines
 
-
+# Function to create a graph from lines
 def create_graph(lines):
     graph = {}
     for line in lines:
@@ -83,8 +76,9 @@ def create_graph(lines):
             graph[end].append(start)  # Since it's an undirected graph, add both directions
     return graph
 
-
+# A* algorithm to find the shortest path between two points in a graph
 def astar(graph, start, goal):
+
     open_set = [(0, start)]
     came_from = {}
     g_score = {node: float('inf') for node in graph}
@@ -106,15 +100,15 @@ def astar(graph, start, goal):
 
     return None  # No path found
 
-
+# Function to calculate Euclidean distance between two coordinates
 def calculate_distance(coord1, coord2):
     return math.sqrt((coord1[0] - coord2[0]) ** 2 + (coord1[1] - coord2[1]) ** 2)
 
-
+# Heuristic function for A* algorithm
 def heuristic(node, goal):
     return calculate_distance(node, goal)
 
-
+# Function to reconstruct the path from the start node to the current node
 def reconstruct_path(came_from, current):
     path = [current]
     while current in came_from:
@@ -122,56 +116,40 @@ def reconstruct_path(came_from, current):
         path.append(current)
     return path[::-1]
 
-
+# Function to switch coordinates (lat, lon) to (lon, lat) for LineString features
 def switch_coordinates(geojson):
     for feature in geojson['features']:
         geometry = feature['geometry']
         if geometry['type'] == 'LineString':
             for i, coord in enumerate(geometry['coordinates']):
                 geometry['coordinates'][i] = (coord[1], coord[0])
-        # Add additional conditions for other geometry types if needed
     return geojson
 
-
 def main():
-    dots_data = read_geojson('dots.geojson')
-    lines_data = read_geojson('osm_data_utwente.geojson')
+    # Read GeoJSON data
+    current_directory = os.path.dirname(__file__) + "/jsons/"
+    lines_data = read_geojson(os.path.join(current_directory,'UT_Area_Roads.geojson'))
 
-    dots_coordinates = extract_coordinates(dots_data)
+    # Extract coordinates and lines
     lines = extract_lines(lines_data)
 
-    print(dots_coordinates)
-
-    print(lines)
-
-    # # Calculate bounding box of the GeoJSON data
-    # min_lat = min(coord[0] for coord in dots_coordinates)
-    # max_lat = max(coord[0] for coord in dots_coordinates)
-    # min_lon = min(coord[1] for coord in dots_coordinates)
-    # max_lon = max(coord[1] for coord in dots_coordinates)
-    #
-    # print("Bounding box of GeoJSON data:")
-    # print("Min Latitude:", min_lat)
-    # print("Max Latitude:", max_lat)
-    # print("Min Longitude:", min_lon)
-    # print("Max Longitude:", max_lon)
-
-    # Select two random points within the bounding box
+    # Select start and goal points
     start = (52.2368057, 6.854245)
     goal = (52.2412227, 6.847291)
 
-    # Adjust precision of start and goal coordinates
-    start = tuple(map(lambda x: round(x, 7), start))  # Adjust precision if needed
-    goal = tuple(map(lambda x: round(x, 7), goal))  # Adjust precision if needed
+    # Round coordinates to match precision
+    start = tuple(map(lambda x: round(x, 7), start))
+    goal = tuple(map(lambda x: round(x, 7), goal))
 
     print("Start:", start)
     print("Goal:", goal)
 
+    # Create graph
     graph = create_graph(lines)
 
     print("Graph created with", len(graph), "nodes.")
 
-    # Ensure that start and goal are in the graph
+    # Ensure start and goal are in the graph
     if start not in graph:
         start = find_closest_node(graph, start)
         print("Adjusted start coordinate to:", start)
@@ -186,13 +164,13 @@ def main():
     # Connect disconnected components
     graph = connect_disconnected_components(graph)
 
+    # Find the shortest path using A*
     path = astar(graph, start, goal)
 
     if path:
         print("Shortest path found:", path)
-        # Execute robot navigation based on the computed path
 
-        # Create a folium map centered at the start point
+        # Create a folium map
         map_osm = folium.Map(location=start, zoom_start=15)
 
         # Add lines to the map
@@ -207,7 +185,5 @@ def main():
     else:
         print("No path found")
 
-
 if __name__ == "__main__":
     main()
-

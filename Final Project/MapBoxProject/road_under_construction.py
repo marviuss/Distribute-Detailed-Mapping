@@ -1,6 +1,7 @@
 import json
 import os
 
+#This file contains code to generate a geojson with roads under construction
 current_directory = os.path.dirname(__file__) + "/jsons/"
 with open(os.path.join(current_directory, "UT_Area_Roads.geojson"), "r") as file:
     data = json.load(file)

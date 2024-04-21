@@ -4,23 +4,26 @@ import os
 from shapely.geometry import Point, shape
 from collections import defaultdict
 
+#Function which goes through the geojson with all information about the road and checks for intersections
+# and dangerous elements on the road (see properties)
 def find_dangerous_junctions(geojson_file_path):
-    print('1')
     try:
         with open(geojson_file_path, "r") as geojson_file:
             geojson_data = json.load(geojson_file)
-        print('2')
-        endpoints = set()
-        for feature in geojson_data["features"]:
-            coords = shape(feature["geometry"]).coords
-            endpoints.add(Point(coords[0]))
-            endpoints.add(Point(coords[-1]))
 
         intersections = defaultdict(dict)
-        for point in endpoints:
-            intersecting_features = [f for f in geojson_data["features"] if shape(f["geometry"]).intersects(point)]
-            if len(intersecting_features) > 1:  
-                properties = {
+
+        # Process each feature to find intersections and dangerous properties
+        for feature in geojson_data["features"]:
+            coords = shape(feature["geometry"]).coords
+            start_point = Point(coords[0])
+            end_point = Point(coords[-1])
+
+            # Consider only start and end points as potential intersection points
+            for point in [start_point, end_point]:
+                intersecting_features = [f for f in geojson_data["features"] if shape(f["geometry"]).intersects(point)]
+                if len(intersecting_features) > 1:
+                    properties = {
                     "traffic_signals": any("traffic_signals" in f["properties"] for f in intersecting_features),
                     "maxspeed_more_than_40": any("maxspeed" in f["properties"] and f["properties"]["maxspeed"] and int(f["properties"]["maxspeed"]) > 40 for f in intersecting_features if "maxspeed" in f["properties"]),
                     "roundabout": any("junction" in f["properties"] and f["properties"]["junction"] == "roundabout" for f in intersecting_features),
@@ -50,7 +53,6 @@ def find_dangerous_junctions(geojson_file_path):
                 for point, properties in intersections.items()
             ]
         }
-        print('3')
         current_directory = os.path.dirname(__file__) + "/jsons/"
         file_path = os.path.join(current_directory, "dangerous_junctions_location.geojson")
         output_file_path = file_path

@@ -106,6 +106,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             .then(response => response.json())
             .then(data => {
                 map.getSource('route').setData(data);
+                document.getElementById('coverageLabel').textContent = data["coverage"];
+                document.getElementById('coverageLabel').style.display = 'block';
+
             })
             .catch(error => {
                 console.error('Error loading route:', error);
@@ -115,7 +118,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         routeOptions.forEach(option => {
             option.classList.toggle('active', option.textContent === routeName);
         });
-    
+
         // Set the active route type for later use when finding the shortest route
         document.getElementById('shortestRouteBtn').setAttribute('data-route-type', routeInfo.routeType);
         document.getElementById('safestRouteBtn').setAttribute('data-route-type', routeInfo.routeType);
@@ -133,16 +136,11 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             endPoint = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
             document.getElementById('shortestRouteBtn').style.display = 'block';
             document.getElementById('safestRouteBtn').style.display = 'block';
+            document.getElementById('colorExplanation').style.display = 'block';
         } else {
             endPoint.setLngLat(coordinates);
         }
     });
-
-    // document.getElementById('shortestRouteBtn').addEventListener('click', function() {
-    //     const routeType = document.querySelector('.active').textContent;
-    //     displayShortestRoute(routeType.toLowerCase()); 
-    //     this.classList.add('active');
-    // });
     
     document.getElementById('shortestRouteBtn').addEventListener('click', function() {
         const routeType = document.querySelector('.active').textContent;
@@ -152,7 +150,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             return;
         }
         // Make API request to find shortest route with start time
-        // displayShortestRoute(routeType.toLowerCase(), startTimeInput);
         displayShortestRoute(startTimeInput);
         this.classList.add('active')
     });
@@ -162,48 +159,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         this.classList.add('active');
     });
 
-
-
-    // function displayShortestRoute(routeType) {
-    //     fetch('/shortest-route', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             start_point: startPoint.getLngLat().toArray(),
-    //             end_point: endPoint.getLngLat().toArray(),
-    //             route_type: routeType 
-    //         })
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         const shortestRoute = data.shortest_route;
-    //         map.getSource('shortest-route-source').setData(shortestRoute);
-
-    //         const startCoords = startPoint.getLngLat().toArray().join(',');
-    //         const endCoords = endPoint.getLngLat().toArray().join(',');
-
-    //         fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${startCoords};${endCoords}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.routes && data.routes.length > 0 && data.routes[0].legs && data.routes[0].legs.length > 0) {
-    //                 const steps = data.routes[0].legs[0].steps;
-    //                 const instructions = steps.map(step => step.maneuver.instruction).join('<br>');
-    //                 document.getElementById('instructions').innerHTML = instructions;
-    //                 document.getElementById('myModal').style.display = 'block';
-    //             } else {
-    //                 console.error('No navigation directions found');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching navigation directions:', error);
-    //         });
-    //     })
-    //     .catch(error => {
-    //         console.error('Error loading shortest route:', error);
-    //     });
-    // }
 
     //Newest one
     function displayShortestRoute(startTime) {
@@ -238,22 +193,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             const estimatedArrivalTime = calculateArrivalTime(startTime, distance);
             console.log(estimatedArrivalTime)
             // Display estimated arrival time to user
-            alert(`Total distance: ${distance}\nEstimated Arrival Time: ${estimatedArrivalTime}`); 
-            fetch(`https://api.mapbox.com/directions/v5/mapbox/${routeType}/${startCoords};${endCoords}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.routes && data.routes.length > 0 && data.routes[0].legs && data.routes[0].legs.length > 0) {
-                    const steps = data.routes[0].legs[0].steps;
-                    const instructions = steps.map(step => step.maneuver.instruction).join('<br>');
-                    document.getElementById('instructions').innerHTML = instructions;
-                    document.getElementById('myModal').style.display = 'block';
-                } else {
-                    console.error('No navigation directions found');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching navigation directions:', error);
-            });
+            alert(`Total distance: ${distance}\nEstimated Arrival Time: ${estimatedArrivalTime}`);
         })
         .catch(error => {
             console.error('Error loading shortest route:', error);
@@ -320,42 +260,16 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             map.getSource('safest-route-source').setData(safestRoute);
             const startCoords = startPoint.getLngLat().toArray().join(',');
             const endCoords = endPoint.getLngLat().toArray().join(',');
-            fetch(`https://api.mapbox.com/directions/v5/mapbox/${routeType}/${startCoords};${endCoords}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.routes && data.routes.length > 0 && data.routes[0].legs && data.routes[0].legs.length > 0) {
-                    const steps = data.routes[0].legs[0].steps;
-                    const instructions = steps.map(step => step.maneuver.instruction).join('<br>');
-                    document.getElementById('instructions').innerHTML = instructions;
-                    document.getElementById('myModal').style.display = 'block';
-                } else {
-                    console.error('No navigation directions found');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching navigation directions:', error);
-            });
         })
         .catch(error => {
             console.error('Error loading shortest route:', error);
         });
     }
 
-    const modal = document.getElementById('myModal');
-    const span = document.getElementsByClassName('close')[0];
-    span.onclick = function() {
-        modal.style.display = 'none';
-    };
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    };
 
 let dangerousJunctionMarkers = [];
 
 // Function to fetch and display dangerous junctions
-
 function fetchDangerousJunctionsData() {
     fetch('/get-dangerous-junctions')
         .then(response => {
@@ -465,4 +379,9 @@ function displayRoadsUnderConstruction() {
         .catch(error => {
             console.error('Error fetching roads under construction:', error);
         });
+}
+
+//Function to reset the page
+function refreshPage(){
+    window.location.reload();
 }

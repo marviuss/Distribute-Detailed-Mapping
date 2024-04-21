@@ -145,6 +145,48 @@ body { margin: 0; padding: 0;}
             box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
 
 }
+
+#colorExplanation{
+            position: relative;
+            top: 40%;
+            left: 10%;
+            width: 90%;
+            height: 20%;
+            z-index: 1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #2F303A;
+}
+
+#coverageLabel{
+            position: relative;
+            top: 60%;
+            left: 10%;
+            width: 90%;
+            height: 20%;
+            z-index: 1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+}
+
+#refreshBtn{
+            position: absolute;
+            top: 91%;
+            left: 10%;
+            width: 80%;
+            height: 5%;
+            z-index: 1;
+            background-color: #292727;
+            color: #fff;
+            border: none;
+            border-radius: 1vh;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
+}
 .danger-marker {
         width: 18px;
         height: 18px;
@@ -152,8 +194,8 @@ body { margin: 0; padding: 0;}
         }
 
 
-/* Style for the input container */
-.input-container {
+/* Style for the input time container */
+.input-time-container {
     position: relative;
     top: 19%; /* Adjust this value to vertically center the input container */
     left: 10%; /* Adjust this value to horizontally center the input container */
@@ -169,7 +211,7 @@ body { margin: 0; padding: 0;}
     
 }
 
-.container {
+.header {
     background-color: #292727;
     position: absolute;
     color: #fff;
@@ -180,23 +222,13 @@ body { margin: 0; padding: 0;}
   }
 
 
-  .container2 {
+  .left-container {
     background-color: #2F303A;
     position: absolute;
     width: 16.6%;
     height: 100%;
   }
 
-
-  .container3 {
-    background-color: white;
-    position: relative;
-    top: 10vh;
-    left: 16.6%;
-    height: 90vh;
-    width: 83.4%;
-    
-  }
 
   #company-name a{
     color: white;

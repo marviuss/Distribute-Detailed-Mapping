@@ -2,10 +2,11 @@ from flask import Flask, render_template, request, jsonify
 import json
 import filter_function
 import os
-import shortest_routing_Dijkstra_algorithm
-import Dangerous_junctions
+import dijkstra_routing
+import dangerous_junctions
 import safest_route
 import map_generation
+import road_length_calculator
 
 app = Flask(__name__, template_folder='template', static_folder='./static')
 current_layer = None
@@ -13,7 +14,6 @@ current_directory = os.path.dirname(__file__) + "/jsons/"
 @app.route('/load-route', methods=['GET'])
 def load_route():
     global current_layer
-    print('hihi')
     route_type = request.args.get('type')
     input_geojson_file = os.path.join(current_directory,'UT_Area_Roads.geojson')
     output_geojson_file = os.path.join(current_directory, f'{route_type}_route.geojson')
@@ -35,6 +35,7 @@ def load_route():
 
         with open(output_geojson_file) as f:
             data = json.load(f)
+            data["coverage"] = road_length_calculator.calculate_total_road_length(output_geojson_file) / road_length_calculator.calculate_total_road_length(input_geojson_file) * 100
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -43,19 +44,17 @@ def load_route():
 @app.route('/shortest-route', methods=['POST'])
 def shortest_route():
     global current_layer
-    g = shortest_routing_Dijkstra_algorithm.Graph()
+    g = dijkstra_routing.Graph()
     file_path = os.path.join(current_directory, f'{current_layer}_route.geojson')
     with open(file_path, "r") as file:
         geojson_data = json.load(file)
-    print('2')
     for feature in geojson_data["features"]:
         if feature["geometry"]["type"] == "LineString":
             g.add_line_string(feature)
 
     data = request.json
     start_point = tuple(data['start_point'])  
-    end_point = tuple(data['end_point'])  
-    print(current_layer)
+    end_point = tuple(data['end_point'])
     if start_point not in g.vertices:
         start_point = g.find_closest_point(start_point)
     if end_point not in g.vertices:
@@ -78,7 +77,6 @@ def shortest_route():
             }
         ]
     }
-    print("has result")
 
     return jsonify({"shortest_route": result_geojson})
 
@@ -86,11 +84,9 @@ def shortest_route():
 def safest_routing():
     global current_layer
     g = safest_route.Graph()
-    print('ok')
     file_path = os.path.join(current_directory, f'{current_layer}_route.geojson')
     with open(file_path, "r") as file:
         geojson_data = json.load(file)
-    print('also ok')
     file_path1 = os.path.join(current_directory, "dangerous_junctions_location.geojson")    
     with open(file_path1, "r") as file:
         dangerous_junctions_data = json.load(file)
@@ -103,8 +99,7 @@ def safest_routing():
 
     data = request.json
     start_point = tuple(data['start_point'])  
-    end_point = tuple(data['end_point'])  
-    print(current_layer)
+    end_point = tuple(data['end_point'])
     if start_point not in g.vertices:
         start_point = g.find_closest_point(start_point)
     if end_point not in g.vertices:
@@ -135,7 +130,7 @@ def safest_routing():
 def find_dangerous_junctions_endpoint():
     try:
         file_path = os.path.join(current_directory, 'UT_Area_Roads.geojson')
-        Dangerous_junctions.find_dangerous_junctions(file_path)
+        dangerous_junctions.find_dangerous_junctions(file_path)
         output_file_path = os.path.join(current_directory, "dangerous_junctions_location.geojson")
         with open(output_file_path, "r") as output_file:
             data = json.load(output_file)

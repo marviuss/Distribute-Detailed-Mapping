@@ -13,7 +13,7 @@
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}"/>
 </head>
 <body>
- <div class = "container2">
+ <div class = "left-container">
     <nav id="menu">
         <a id="dropdownBtn" href="#">Load Route</a>
         <div id="dropdownContent" style="display: none;">
@@ -24,38 +24,35 @@
             <a href="#" class="routeOption">Load Walking+Cycling</a>
             <a href="#" class="routeOption">Load Cycling+Car</a>
         </div>
-        <!-- <a id="shortestRouteBtn" href="#" style="display: none;">Find Shortest Route</a> -->
 
     </nav>
     
-    <div class="input-container">
+    <div class="input-time-container">
         <label for="start-time">Start Time:</label>
         <input type="time" id="start-time" name="start-time">
     </div>
+
     <button id="showDangerousJunctionsBtn">Show Dangerous Junctions</button>
     <button id="displayRoadsUnderConstructionBtn">Display Roads Under Construction</button>
     <button id="safestRouteBtn" href="#" style="display: none;">Find Safest Route</button>
     <button id="shortestRouteBtn" href="#" style="display: none;">Find Shortest Route</button>
+     <button id="refreshBtn" onClick="refreshPage()">Reset Everything</button>
+     <div id="colorExplanation" href="#" style="margin-top: 10px; display: none;">
+    <span>🟢 - Safest route</span><br>
+    <span>🔵 - Fastest route</span><br>
+    <span>🔴 - Construction work</span>
+     </div>
+     <label id="coverageLabel" href="#" style="display: none;">0%</label>
  </div>
 
- <div class="container">
+ <div class="header">
     <div id="company-name">
         <a href="https://www.distribute.company/">DISTRIBUTE</a>
     </div>
  </div>
 
- <div class="container3">
 
- </div>
-
-</nav>
 <div id="map"></div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="instructions"></div>
-    </div>
-</div>
 
 
 
