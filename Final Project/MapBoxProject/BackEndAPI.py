@@ -10,7 +10,10 @@ import road_length_calculator
 
 app = Flask(__name__, template_folder='template', static_folder='./static')
 current_layer = None
+#Directory where the jsons are located
 current_directory = os.path.dirname(__file__) + "/jsons/"
+
+#Method to fetch routes to frontend
 @app.route('/load-route', methods=['GET'])
 def load_route():
     global current_layer
@@ -35,12 +38,14 @@ def load_route():
 
         with open(output_geojson_file) as f:
             data = json.load(f)
-            data["coverage"] = road_length_calculator.calculate_total_road_length(output_geojson_file) / road_length_calculator.calculate_total_road_length(input_geojson_file) * 100
+            #Adding coverage information to the json
+            data["coverage"] = road_length_calculator.calculate_layer_coverage(input_geojson_file, output_geojson_file)
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
 
+#Method to fetch the shortest route to frontend
 @app.route('/shortest-route', methods=['POST'])
 def shortest_route():
     global current_layer
@@ -80,6 +85,7 @@ def shortest_route():
 
     return jsonify({"shortest_route": result_geojson})
 
+#Method to fetch the safest route to frontend
 @app.route('/safest-route', methods=['POST'])
 def safest_routing():
     global current_layer
@@ -125,7 +131,7 @@ def safest_routing():
 
     return jsonify({"safest_route": result_geojson})
 
-
+#Method to fetch dangerous junctions to frontend
 @app.route('/get-dangerous-junctions', methods=['GET'])
 def find_dangerous_junctions_endpoint():
     try:
@@ -134,12 +140,11 @@ def find_dangerous_junctions_endpoint():
         output_file_path = os.path.join(current_directory, "dangerous_junctions_location.geojson")
         with open(output_file_path, "r") as output_file:
             data = json.load(output_file)
-        
         return jsonify(data)
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
 #fetch roads under construction
 @app.route('/get-roads-under-construction', methods=['GET'])
 def get_roads_under_construction():

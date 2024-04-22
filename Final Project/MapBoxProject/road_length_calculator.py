@@ -11,7 +11,11 @@ def convert_to_meters(coords):
     x, y = utm_proj(lon, lat)
     return x, y
 
+# Method to calculate layer coverage based on the whole area and the layer file
+def calculate_layer_coverage(main_geojson_file, layer_geojson_file):
+    return calculate_total_road_length(layer_geojson_file)/calculate_total_road_length(main_geojson_file) * 100
 
+# Method to calculate the area of roads of a specific GeoJSON file
 def calculate_total_road_length(geojson_file_path):
     try:
         current_directory = os.path.dirname(__file__) + "/jsons/"

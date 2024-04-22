@@ -73,8 +73,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         });
 
 
-        
-
+        // Event listener for dropdown button for loading layers
         const dropdownBtn = document.getElementById('dropdownBtn');
         dropdownBtn.addEventListener('click', toggleDropdown);
         const routeOptions = document.querySelectorAll('.routeOption');
@@ -85,10 +84,13 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         });
     });
 
+    //Function for the menu with layer load
     function toggleDropdown() {
         const dropdownContent = document.getElementById('dropdownContent');
         dropdownContent.style.display = dropdownContent.style.display === 'none' ? 'block' : 'none';
     }
+
+    // Function for loading the routes
     function loadRoute(routeName) {
         const routeURLs = {
             'Load Cycle Route': { url: '/load-route?type=cycling', routeType: 'cycling' },
@@ -106,7 +108,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             .then(response => response.json())
             .then(data => {
                 map.getSource('route').setData(data);
-                document.getElementById('coverageLabel').textContent = data["coverage"];
+                document.getElementById('colorExplanation').style.display = 'none';
+                document.getElementById('coverageLabel').textContent = "Coverage of the selected layer is: " + Math.ceil(data["coverage"]) + "%";
                 document.getElementById('coverageLabel').style.display = 'block';
 
             })
@@ -137,11 +140,13 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             document.getElementById('shortestRouteBtn').style.display = 'block';
             document.getElementById('safestRouteBtn').style.display = 'block';
             document.getElementById('colorExplanation').style.display = 'block';
+            document.getElementById('coverageLabel').style.display = 'none';
         } else {
             endPoint.setLngLat(coordinates);
         }
     });
-    
+
+    // Event listener for shorest route button
     document.getElementById('shortestRouteBtn').addEventListener('click', function() {
         const routeType = document.querySelector('.active').textContent;
         const startTimeInput = document.getElementById('start-time').value;
@@ -149,7 +154,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             alert('Hey, enter the departure time.');
             return;
         }
-        // Make API request to find shortest route with start time
         displayShortestRoute(startTimeInput);
         this.classList.add('active')
     });
@@ -160,7 +164,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
     });
 
 
-    //Newest one
+    //Function to display the shortest route
     function displayShortestRoute(startTime) {
         const routeType = document.getElementById('shortestRouteBtn').getAttribute('data-route-type');
 
@@ -199,13 +203,13 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             console.error('Error loading shortest route:', error);
         });
     }
+
     function calculateArrivalTime(startTime, distance) {
-        // Assuming velocity is 20 km/h
         const velocity = 5; // km/h
         const travelTimeHours = distance / velocity; // hours
     
         console.log('Travel time (hours):', travelTimeHours);
-    
+
         // Convert travel time to milliseconds
         const travelTimeMs = travelTimeHours * 60 * 60 * 1000; 
     
@@ -221,6 +225,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             console.error('Invalid start time:', startTime);
             return 'Invalid start time';
         }
+
         // Calculate arrival time in milliseconds
         const arrivalTimeMs = startTimeMs + travelTimeMs;
         console.log('Arrival time (milliseconds):', arrivalTimeMs);
@@ -232,8 +237,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         return `${hours}:${minutes}`;
     }
     
-
-
 
     function displaySafestRoute() {
         const routeType = document.getElementById('safestRouteBtn').getAttribute('data-route-type');
@@ -269,7 +272,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
 
 let dangerousJunctionMarkers = [];
 
-// Function to fetch and display dangerous junctions
+
+// Function to fetch dangerous junctions
 function fetchDangerousJunctionsData() {
     fetch('/get-dangerous-junctions')
         .then(response => {
@@ -294,6 +298,7 @@ function fetchDangerousJunctionsData() {
         });
 }
 
+// Function to display dangerous junctions
 function displayDangerousJunctions(features) {
     features.forEach(feature => {
         const { geometry, properties } = feature;
@@ -316,11 +321,14 @@ function displayDangerousJunctions(features) {
     });
 }
 
+// Function to clear dangerous junctions markers
 function clearDangerousJunctionMarkers() {
     dangerousJunctionMarkers.forEach(marker => marker.remove());
     dangerousJunctionMarkers = [];
 }
 
+
+// Event listener to the button to display dangerous roads
 document.getElementById('showDangerousJunctionsBtn').addEventListener('click', function() {
     if (dangerousJunctionMarkers.length > 0) {
         clearDangerousJunctionMarkers();
@@ -340,7 +348,7 @@ function getPopupContent(properties) {
     return content;
 }
 
-// Event listener to the button
+// Event listener to the button to display roads under construction
 document.getElementById('displayRoadsUnderConstructionBtn').addEventListener('click', function() {
     displayRoadsUnderConstruction();
 });

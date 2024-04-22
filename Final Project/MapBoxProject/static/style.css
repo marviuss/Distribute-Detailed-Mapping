@@ -208,6 +208,7 @@ body { margin: 0; padding: 0;}
     border-radius: 1vh; /* Add border radius for rounded corners */
     align-items: center;
     justify-content: center;
+    font-family: 'Open Sans', sans-serif;
     
 }
 
@@ -241,6 +242,7 @@ body { margin: 0; padding: 0;}
     height: 4.7%;
     top: 2.5vh;
     left: 1%;
+      font-family: 'Open Sans', sans-serif;
     border-radius: 1vh;
   }
 
