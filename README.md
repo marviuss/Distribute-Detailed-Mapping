@@ -20,8 +20,11 @@ The project integrates with Mapbox services for map rendering and data visualiza
 To get started with the project, follow these steps:
 
 1. **Install Flask**:
-   - Set up a virtual environment and install Flask: `python -m pip install flask`.
+   - Set up a virtual environment and install Flask: `pip install flask`.
    - Install the geojson package: `pip install geojson`.
+   - Install the shapely package: `pip install shapely`
+   - Install the requests package: `pip install requests`
+   - Install the pyproj package: `pip install pyproj`
 
 2. **Run the Flask Server**:
    - Copy the access token from your own Mapbox account and replace the value of `mapboxgl.accessToken` in `script.js` with your token.
@@ -52,16 +55,6 @@ No information available about the traffic density on campus.
 
 ## Improvements
 - **Live Tracking Data**: Adding live tracking data would enable real-time navigation and tracking of robot locations within the campus.
-
-## Contributing
-We welcome contributions! To contribute, please:
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/new-feature`.
-3. Make your changes and commit them: `git commit -am 'Add new feature'`.
-4. Push to the branch: `git push origin feature/new-feature`.
-
-Submit a pull request, and our team will review it. Thank you for your interest in contributing to the project!
 
 ## Contact and Support
 If you encounter issues or have questions, please contact our support team via email [t.astashov@student.utwente.nl](mailto:t.astashov@student.utwente.nl), [nguyenngocminhchau@student.utwente.nl](mailto:nguyenngocminhchau@student.utwente.nl). We're happy to help!

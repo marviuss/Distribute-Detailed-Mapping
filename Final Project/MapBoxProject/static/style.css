@@ -1,7 +1,7 @@
 body { margin: 0; padding: 0;}
 #map { position: absolute; top: 10vh; left: 16.6%; width: 83.4%; height: 90vh;}
 
-/* We need to put the format of the menu in a separate css file */
+
 #menu {
     background: #292727;
     position: relative;
@@ -82,22 +82,6 @@ body { margin: 0; padding: 0;}
     border: none;
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0.8, 0.8);
-}
-
-
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 10px;
-    width: 50%; /* Adjust the width */
-    max-width: 400px;
-    background-color: white; /* Semi-transparent white */
-    padding: 20px;
-    margin-top: 20px; /* Adjust the distance from the top */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .close {
