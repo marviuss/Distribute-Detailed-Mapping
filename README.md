@@ -24,9 +24,10 @@ To get started with the project, follow these steps:
    - Install the geojson package: `pip install geojson`.
 
 2. **Run the Flask Server**:
+   - Copy the access token from your own Mapbox account and replace the value of `mapboxgl.accessToken` in `script.js` with your token.
    - Right-click on `BackEndAPI.py` and select "Run Code" to start the server.
    - Open your browser and navigate to `http://localhost:8000`.
-   - Copy the access token from your own Mapbox account and replace the value of `mapboxgl.accessToken` in `script.js` with your token.
+   
 
 ## Usage
 To use the application:
