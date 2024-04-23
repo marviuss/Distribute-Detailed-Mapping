@@ -7,6 +7,9 @@ import math
 import networkx as nx
 from heapq import heappop, heappush
 
+#Disclamer: this class is not connected to the main project, as we found out that Dijkstra algorithm outperforms A-star,
+# but it's usable on it's own, just change coordinates in the main method and it will generate you an HTML with the route
+
 def read_geojson(file_path):
     with open(file_path, 'r') as f:
         data = json.load(f)
