@@ -108,6 +108,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             .then(response => response.json())
             .then(data => {
                 map.getSource('route').setData(data);
+
+                //Hide colorExplanation and show updated coverageLabel
                 document.getElementById('colorExplanation').style.display = 'none';
                 document.getElementById('coverageLabel').textContent = "Coverage of the selected layer is: " + Math.ceil(data["coverage"]) + "%";
                 document.getElementById('coverageLabel').style.display = 'block';
@@ -139,7 +141,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
             endPoint = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
             document.getElementById('shortestRouteBtn').style.display = 'block';
             document.getElementById('safestRouteBtn').style.display = 'block';
-            document.getElementById('colorExplanation').style.display = 'block';
             document.getElementById('coverageLabel').style.display = 'none';
         } else {
             endPoint.setLngLat(coordinates);
@@ -202,6 +203,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         .catch(error => {
             console.error('Error loading shortest route:', error);
         });
+        //Show color explanation if data is correct
+            document.getElementById('colorExplanation').style.display = 'block';
+            document.getElementById('coverageLabel').style.display = 'none';
     }
 
     function calculateArrivalTime(startTime, distance) {
@@ -267,6 +271,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhdW5ndXllbjIxMDkiLCJhIjoiY2x1OGdyZ2ZvMGNra
         .catch(error => {
             console.error('Error loading shortest route:', error);
         });
+        //Show color explanation if data is correct
+            document.getElementById('colorExplanation').style.display = 'block';
+            document.getElementById('coverageLabel').style.display = 'none';
     }
 
 
